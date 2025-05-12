@@ -6,18 +6,17 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import roomescape.common.exception.AuthorizationException;
 import roomescape.domain.MemberRole;
 import roomescape.infrastructure.AuthorizationExtractor;
-import roomescape.infrastructure.CookieAuthorizationExtractor;
-import roomescape.infrastructure.JwtTokenProvider;
+import roomescape.infrastructure.TokenProvider;
 import roomescape.service.MemberService;
 
 public class CheckMemberRoleInterceptor implements HandlerInterceptor {
 
-    private final JwtTokenProvider jwtTokenProvider;
-    private final AuthorizationExtractor extractor;
     private final MemberService memberService;
+    private final AuthorizationExtractor extractor;
+    private final TokenProvider tokenProvider;
 
-    public CheckMemberRoleInterceptor(JwtTokenProvider jwtTokenProvider, AuthorizationExtractor extractor, MemberService memberService) {
-        this.jwtTokenProvider = jwtTokenProvider;
+    public CheckMemberRoleInterceptor(TokenProvider tokenProvider, AuthorizationExtractor extractor, MemberService memberService) {
+        this.tokenProvider = tokenProvider;
         this.extractor = extractor;
         this.memberService = memberService;
     }
@@ -25,11 +24,11 @@ public class CheckMemberRoleInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = extractor.extractToken(request);
-        if (!jwtTokenProvider.validateToken(token)) {
+        if (!tokenProvider.validateToken(token)) {
             throw new AuthorizationException("인증 정보가 올바르지 않습니다.");
         }
-        Long memberId = Long.parseLong(jwtTokenProvider.getSub(token));
-        String byKey = jwtTokenProvider.getPayloadByKey(token, "role");
+        Long memberId = Long.parseLong(tokenProvider.getSub(token));
+        String byKey = tokenProvider.getPayloadByKey(token, "role");
         MemberRole memberRole = MemberRole.valueOf(byKey);
         if (!memberService.isExistMemberById(memberId) || !memberRole.equals(MemberRole.ADMIN)) {
             response.setStatus(403);

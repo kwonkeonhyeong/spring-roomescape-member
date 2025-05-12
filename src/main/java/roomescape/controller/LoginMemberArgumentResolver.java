@@ -1,7 +1,6 @@
 package roomescape.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -11,7 +10,6 @@ import roomescape.common.exception.AuthorizationException;
 import roomescape.domain.Member;
 import roomescape.dto.request.LoginMemberRequest;
 import roomescape.infrastructure.AuthorizationExtractor;
-import roomescape.infrastructure.CookieAuthorizationExtractor;
 import roomescape.infrastructure.JwtTokenProvider;
 import roomescape.service.MemberService;
 

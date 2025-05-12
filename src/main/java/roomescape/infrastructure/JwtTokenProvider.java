@@ -1,6 +1,7 @@
 package roomescape.infrastructure;
 
 import io.jsonwebtoken.*;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import roomescape.domain.Member;
@@ -8,7 +9,8 @@ import roomescape.domain.Member;
 import java.util.Date;
 
 @Component
-public class JwtTokenProvider {
+@Qualifier("JwtTokenProvider")
+public class JwtTokenProvider implements TokenProvider{
     @Value("${jwt.secret-key}")
     private String secretKey;
     @Value("${jwt.validity-in-milliseconds}")
