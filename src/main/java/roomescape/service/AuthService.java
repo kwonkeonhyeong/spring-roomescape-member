@@ -3,8 +3,11 @@ package roomescape.service;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import roomescape.common.exception.AuthorizationException;
+import roomescape.common.exception.NotFoundMemberException;
 import roomescape.domain.Member;
+import roomescape.dto.request.LoginMemberRequest;
 import roomescape.dto.request.LoginRequest;
+import roomescape.dto.response.MemberLoginCheckResponse;
 import roomescape.infrastructure.JwtTokenProvider;
 import roomescape.infrastructure.TokenProvider;
 import roomescape.repository.impl.JdbcMemberRepository;
@@ -31,5 +34,11 @@ public class AuthService {
 
     public boolean checkInvalidLogin(Member member, LoginRequest request) {
         return member.checkInvalidLogin(request.email(), request.password());
+    }
+
+    public MemberLoginCheckResponse findMemberById(LoginMemberRequest request) {
+        Member member = jdbcMemberRepository.findById(request.id())
+                .orElseThrow(() -> new NotFoundMemberException("존재하지 않는 유저 정보입니다."));
+        return MemberLoginCheckResponse.from(member);
     }
 }

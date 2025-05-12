@@ -30,7 +30,7 @@ public class LoginController {
 
     @GetMapping("/login/check")
     public ResponseEntity<MemberLoginCheckResponse> loginCheck(LoginMemberRequest request) {
-        MemberLoginCheckResponse response = new MemberLoginCheckResponse(request.name());
+        MemberLoginCheckResponse response = authService.findMemberById(request);
         return ResponseEntity.ok(response);
     }
 
