@@ -16,18 +16,18 @@ import java.util.List;
 public class WebMvcConfiguration implements WebMvcConfigurer {
 
     private final MemberService memberService;
-    private final JwtTokenProvider jwtTokenProvider;
     private final AuthorizationExtractor extractor;
+    private final JwtTokenProvider jwtTokenProvider;
 
-    public WebMvcConfiguration(MemberService memberService, JwtTokenProvider jwtTokenProvider, AuthorizationExtractor extractor) {
+    public WebMvcConfiguration(MemberService memberService, AuthorizationExtractor authorizationExtractor, JwtTokenProvider jwtTokenProvider) {
         this.memberService = memberService;
+        this.extractor = authorizationExtractor;
         this.jwtTokenProvider = jwtTokenProvider;
-        this.extractor = extractor;
     }
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(new LoginMemberArgumentResolver(memberService, jwtTokenProvider, extractor));
+        resolvers.add(new LoginMemberArgumentResolver(memberService, extractor, jwtTokenProvider));
     }
 
     @Override

@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import roomescape.dto.request.LoginMemberRequest;
 import roomescape.dto.request.LoginRequest;
 import roomescape.dto.response.MemberLoginCheckResponse;
-import roomescape.infrastructure.AuthorizationExtractor;
 import roomescape.service.AuthService;
 
 @RestController

@@ -6,6 +6,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import roomescape.common.exception.AuthorizationException;
 import roomescape.domain.MemberRole;
 import roomescape.infrastructure.AuthorizationExtractor;
+import roomescape.infrastructure.CookieAuthorizationExtractor;
 import roomescape.infrastructure.JwtTokenProvider;
 import roomescape.service.MemberService;
 
@@ -23,7 +24,7 @@ public class CheckMemberRoleInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String token = extractor.extractTokenFromCookie(request);
+        String token = extractor.extractToken(request);
         if (!jwtTokenProvider.validateToken(token)) {
             throw new AuthorizationException("인증 정보가 올바르지 않습니다.");
         }
