@@ -56,7 +56,7 @@ public class JdbcThemeRepository implements ThemeRepository {
                 FROM (
                     SELECT r.theme_id, COUNT(*) AS reservation_count
                     FROM reservation r
-                    WHERE r.date BETWEEN DATEADD('DAY', -7, CURRENT_DATE) AND DATEADD('DAY', -1, CURRENT_DATE)
+                    WHERE r.date BETWEEN DATEADD('DAY', -7, CURRENT_DA TE) AND DATEADD('DAY', -1, CURRENT_DATE)
                     GROUP BY r.theme_id
                     ORDER BY reservation_count ASC
                     LIMIT ?
